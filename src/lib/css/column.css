@@ -1,0 +1,10 @@
+@layer utilities {
+	.column {
+		display: grid;
+		grid-template-columns: auto max(1080px) auto;
+	}
+}
+
+.column > * {
+	grid-column-start: 2;
+}
