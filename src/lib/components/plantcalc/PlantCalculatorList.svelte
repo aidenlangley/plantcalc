@@ -1,79 +1,68 @@
 <script lang="ts">
-	import type { PlantItem } from './plant-calculator.svelte.ts';
-	import PlantCalculatorListItem from './PlantCalculatorListItem.svelte';
+  import { getContext } from 'svelte';
+  import type {
+    PlantCalculator,
+    PlantCalculatorItem
+  } from './plantcalc.svelte.ts';
+  import { headers } from './plantcalc.svelte.ts';
+  import PlantCalculatorListItem from './PlantCalculatorListItem.svelte';
+  import * as Item from '$lib/components/ui/item/index.js';
 
-	interface PlantCalculatorListProps {
-		totalArea: number;
-		packing: 'square' | 'triangle';
-		items: PlantItem[];
-	}
+  const calc: PlantCalculator = getContext('PlantCalculatorContext');
 
-	let { totalArea = 0, packing = 'square', items = [] }: PlantCalculatorListProps = $props();
+  function getAllocatedArea(item: PlantCalculatorItem) {
+    const proportion = Number(item.proportion) || 0;
+    return calc.safeTotalArea * (proportion / 100);
+  }
 
-	const packingFactor = $derived(packing === 'triangle' ? Math.sqrt(3) / 2 : 1);
-	const safeTotalArea = $derived(Math.max(0, totalArea || 0));
-
-	function getAllocatedArea(item: PlantItem) {
-		const proportion = Number(item.proportion) || 0;
-		return safeTotalArea * (proportion / 100);
-	}
-
-	function getPlantCount(item: PlantItem) {
-		const allocatedArea = getAllocatedArea(item);
-		const spacing = Number(item.spacing) || 0;
-		if (allocatedArea <= 0 || spacing <= 0) return 0;
-		return Math.floor(allocatedArea / (spacing * packingFactor));
-	}
+  function getPlantCount(item: PlantCalculatorItem) {
+    const allocatedArea = getAllocatedArea(item);
+    const spacing = Number(item.spacing) || 0;
+    if (allocatedArea <= 0 || spacing <= 0) return 0;
+    return Math.floor(allocatedArea / (spacing * calc.packingFactor));
+  }
 </script>
 
-<div class="table">
-	<div>Description</div>
-	<div>Proportion (%)</div>
-	<div>Spacing (m²)</div>
-	<div>Area (m²)</div>
-	<div>Plants</div>
-	{#each items as item (item.id)}
-		{@const allocatedArea = getAllocatedArea(item)}
-		{@const plants = getPlantCount(item)}
-		<PlantCalculatorListItem
-			bind:description={item.desc}
-			bind:proportion={item.proportion}
-			bind:spacing={item.spacing}
-			{allocatedArea}
-			{plants}
-		/>
-	{/each}
-	{#if items.length === 0}
-		<div class="empty">No plants yet. Add a row to get started.</div>
-	{/if}
+<div class="header">
+  {#each headers as header (header)}
+    <Item.Root variant="outline">
+      <Item.Content>
+        <Item.Title>{header}</Item.Title>
+      </Item.Content>
+    </Item.Root>
+  {/each}
 </div>
+<ol class="list">
+  {#each calc.getItems() as item, index (item.id)}
+    {@const allocatedArea = getAllocatedArea(item)}
+    {@const plants = getPlantCount(item)}
+    <li class="list-items">
+      <PlantCalculatorListItem
+        bind:id={item.id}
+        {index}
+        bind:description={item.desc}
+        bind:proportion={item.proportion}
+        bind:spacing={item.spacing}
+        {allocatedArea}
+        {plants}
+      />
+    </li>
+  {/each}
+</ol>
+{#if calc.getItems().length === 0}
+  <div class="empty">No plants yet. Add a row to get started.</div>
+{/if}
 
 <style>
-	.table {
-		display: grid;
-		grid-template-columns: 4fr repeat(4, minmax(0, 1fr));
-		gap: 1rem;
-		align-items: center;
-	}
+  .header,
+  .list,
+  .list-items {
+    display: grid;
+    grid-template-columns: 3.5fr repeat(4, minmax(0, 1fr)) 0.3fr;
+    gap: 1rem;
+  }
 
-	.row {
-		display: grid;
-		grid-template-columns: 1.4fr 0.7fr 0.7fr 0.7fr 0.5fr;
-		gap: 0.5rem;
-		align-items: center;
-	}
-
-	.header {
-		font-size: 0.9rem;
-		opacity: 0.7;
-	}
-
-	.right {
-		text-align: right;
-	}
-
-	.empty {
-		padding: 0.5rem 0;
-		opacity: 0.6;
-	}
+  .list-items {
+    grid-column: span 6;
+  }
 </style>
