@@ -1,12 +1,6 @@
 <script lang="ts">
+	import type { PlantItem } from './plant-calculator.svelte.ts';
 	import PlantCalculatorListItem from './PlantCalculatorListItem.svelte';
-
-	type PlantItem = {
-		id: number;
-		description: string;
-		proportion: number;
-		spacing: number;
-	};
 
 	interface PlantCalculatorListProps {
 		totalArea: number;
@@ -32,19 +26,17 @@
 	}
 </script>
 
-<div class="list">
-	<div class="header row">
-		<div>Description</div>
-		<div class="right">Proportion (%)</div>
-		<div class="right">Spacing (m²)</div>
-		<div class="right">Allocated Area (m²)</div>
-		<div class="right">Plants</div>
-	</div>
+<div class="table">
+	<div>Description</div>
+	<div>Proportion (%)</div>
+	<div>Spacing (m²)</div>
+	<div>Area (m²)</div>
+	<div>Plants</div>
 	{#each items as item (item.id)}
 		{@const allocatedArea = getAllocatedArea(item)}
 		{@const plants = getPlantCount(item)}
 		<PlantCalculatorListItem
-			bind:description={item.description}
+			bind:description={item.desc}
 			bind:proportion={item.proportion}
 			bind:spacing={item.spacing}
 			{allocatedArea}
@@ -57,10 +49,11 @@
 </div>
 
 <style>
-	.list {
+	.table {
 		display: grid;
-		grid-template-columns: 4fr repeat(5, minmax(0, 1fr));
+		grid-template-columns: 4fr repeat(4, minmax(0, 1fr));
 		gap: 1rem;
+		align-items: center;
 	}
 
 	.row {

@@ -1,24 +1,24 @@
 <script lang="ts">
-	import InputField from './InputField.svelte';
+	import InputField from '../InputField.svelte';
 
 	interface PlantCalculatorLineItemProps {
-		description: string;
-		proportion: number;
-		spacing: number;
+		description?: string;
+		proportion?: number;
+		spacing?: number;
 		allocatedArea: number;
 		plants: number;
 	}
 
 	let {
 		description = $bindable(''),
-		proportion = $bindable(0),
-		spacing = $bindable(0),
+		proportion = $bindable(20),
+		spacing = $bindable(1.5),
 		allocatedArea,
 		plants
 	}: PlantCalculatorLineItemProps = $props();
 </script>
 
-<div class="container">
+<div>
 	<InputField
 		id="description"
 		type="text"
@@ -62,11 +62,3 @@
 		readonly
 	/>
 </div>
-
-<style>
-	.container {
-		display: grid;
-		grid-template-columns: 4fr repeat(5, minmax(0, 1fr));
-		gap: 1rem;
-	}
-</style>

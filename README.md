@@ -1,5 +1,13 @@
 # sv
 
+<!--toc:start-->
+
+- [sv](#sv)
+  - [Creating a project](#creating-a-project)
+  - [Developing](#developing)
+  - [Building](#building)
+  <!--toc:end-->
+
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
 ## Creating a project

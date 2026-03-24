@@ -5,8 +5,6 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 
-	import PlantCalculatorSidebar from '$lib/components/PlantCalculatorSidebar.svelte';
-
 	let { children } = $props();
 </script>
 
@@ -22,9 +20,9 @@
 	<main class="column">
 		{@render children()}
 	</main>
-	<aside>
-		<PlantCalculatorSidebar />
-	</aside>
+	<!-- <aside> -->
+	<!-- 	<PlantCalculatorSidebar /> -->
+	<!-- </aside> -->
 	<footer>
 		<Footer />
 	</footer>
@@ -38,12 +36,15 @@
 
 	.container {
 		display: grid;
-		grid-template-columns: 3fr 1fr;
+		grid-template-columns: auto; /* 3fr 1fr; */
 		grid-template-rows: auto;
 		grid-template-areas:
-			'header header'
-			'main sidebar'
-			'footer footer';
+			'header'
+			'main'
+			'footer';
+		/* 'header header' */
+		/* 'main aside' */
+		/* 'footer footer'; */
 
 		grid-column-gap: var(--grid-gap);
 		place-self: center;
@@ -67,10 +68,10 @@
 		grid-area: main;
 	}
 
-	aside {
-		grid-area: sidebar;
-		justify-content: left;
-	}
+	/* aside { */
+	/* 	grid-area: sidebar; */
+	/* 	justify-content: left; */
+	/* } */
 
 	footer {
 		grid-area: footer;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PlantCalculator from '$lib/components/PlantCalculator.svelte';
+	import PlantCalculator from '$lib/components/plantcalc/PlantCalculator.svelte';
 </script>
 
 <PlantCalculator />
