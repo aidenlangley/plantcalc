@@ -7,8 +7,6 @@
 @import 'tw-animate-css';
 @import '@fontsource-variable/inter';
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
@@ -57,11 +55,7 @@
 	text-rendering: optimizeLegibility;
 }
 
-html {
-	min-height: 100%;
-	scroll-behavior: smooth;
-	overscroll-behavior: contain;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 .dark {
 	--background: oklch(0.145 0 0);
@@ -159,13 +153,21 @@ html {
 	--radius-4xl: calc(var(--radius) * 2.6);
 }
 
+html {
+	min-height: 100%;
+	scroll-behavior: smooth;
+	overscroll-behavior: contain;
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
+
 	html {
 		@apply font-sans;
 	}

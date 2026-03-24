@@ -1,0 +1,5 @@
+# .husky/pre-commit
+deno test
+deno task check
+deno task format
+git update-index --again

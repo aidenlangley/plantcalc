@@ -1,9 +1,11 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+
 	import Header from '$lib/components/Header.svelte';
-	import MainSidebar from '$lib/components/MainSidebar.svelte';
 	import Footer from '$lib/components/Footer.svelte';
+
+	import PlantCalculatorSidebar from '$lib/components/PlantCalculatorSidebar.svelte';
 
 	let { children } = $props();
 </script>
@@ -21,7 +23,7 @@
 		{@render children()}
 	</main>
 	<aside>
-		<MainSidebar />
+		<PlantCalculatorSidebar />
 	</aside>
 	<footer>
 		<Footer />
@@ -66,7 +68,7 @@
 	}
 
 	aside {
-		grid-area: siderbar;
+		grid-area: sidebar;
 		justify-content: left;
 	}
 

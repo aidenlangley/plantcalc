@@ -1,13 +1,14 @@
-import prettier from 'eslint-config-prettier';
-import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
+import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
+import path from 'node:path';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
 
+// @ts-ignore not interested in lint config errors
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
 export default defineConfig(
@@ -23,6 +24,13 @@ export default defineConfig(
 			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
 			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
 			'no-undef': 'off'
+		}
+	},
+	{
+		// This is from shadcn, not worried about fixing their lint errors
+		files: ['./src/lib/components/ui/**/*.svelte'],
+		rules: {
+			'svelte/no-navigation-without-resolve': 'off'
 		}
 	},
 	{
